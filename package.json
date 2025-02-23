@@ -1,0 +1,26 @@
+{
+	"name": "drborkovabot",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"author": "template",
+	"license": "ISC",
+	"scripts": {
+		"start": "nodemon -d 0.5 -w .env -w src -x node --env-file=.env --import tsx/esm bot.ts",
+		"start:prod": "node --import tsx/esm bot.ts",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@prisma/client": "^6.2.1",
+		"grammy": "^1.34.1",
+		"tsx": "^4.7.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.5.3",
+		"@types/node": "^22.10.7",
+		"env-cmd": "^10.1.0",
+		"nodemon": "^3.1.9",
+		"prisma": "^6.3.1",
+		"typescript": "^5.3.3"
+	}
+}

@@ -1,0 +1,14 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+);
+
+-- CreateTable
+CREATE TABLE "Alarms" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "time" INTEGER NOT NULL,
+    "content" TEXT,
+    "hasNote" BOOLEAN NOT NULL DEFAULT false,
+    "authorId" INTEGER NOT NULL,
+    CONSTRAINT "Alarms_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
