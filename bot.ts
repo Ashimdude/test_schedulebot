@@ -34,9 +34,17 @@ async function scheduleAlarm(alarmId: number, userId: number, time: number, hasN
       console.error(`Failed to send reminder for alarm ${alarmId}:`, error);
     }
     timeouts.delete(alarmId);
-    await prisma.alarms.delete({
-      where: { id:alarmId},
-    });
+    try {
+      const alarmExists = await prisma.alarms.findUnique({ where: { id: alarmId } });
+      if (!alarmExists) {
+        return;
+      }
+      await prisma.alarms.delete({
+        where: { id: alarmId },
+      });
+    } catch (error) {
+      console.log("Error deleting alarm:");
+    }
   }, delay);
   timeouts.set(alarmId, timeout);
 }
@@ -113,10 +121,23 @@ bot.on("callback_query:data", async (ctx) => {
       return;
     }
     const alarmId = Number.parseInt(alarmIdPart);
-    await prisma.alarms.delete({
-      where: { id: alarmId },
-    });
-    await ctx.deleteMessage();
+
+    try {
+      const alarmExists = await prisma.alarms.findUnique({ where: { id: alarmId } });
+      if (!alarmExists) {
+        await ctx.answerCallbackQuery({ text: "Alarm not found!" });
+      }
+      else{
+        await prisma.alarms.delete({
+          where: { id: alarmId },
+        });
+      }
+      await ctx.deleteMessage();
+      await ctx.answerCallbackQuery();
+    } catch (error) {
+      console.error("Error deleting alarm:");
+      await ctx.answerCallbackQuery({ text: "Failed to delete alarm. Please try again." });
+    }
 
   }
   if (callbackData === "4") {
