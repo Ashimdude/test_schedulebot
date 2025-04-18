@@ -6,17 +6,18 @@
 	"author": "template",
 	"license": "ISC",
 	"scripts": {
-		"start": "nodemon -d 0.5 -w .env -w src -x node --env-file=.env --import tsx/esm bot.ts",
-		"start:prod": "node --import tsx/esm bot.ts",
+		"start": "nodemon -d 0.5 -w .env -w src -x node --env-file=.env --import tsx/esm src/app.ts",
+		"start:prod": "node --import tsx/esm src/app.ts",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
+		"@grammyjs/storage-free": "2.4.2",
 		"@prisma/client": "^6.2.1",
 		"grammy": "^1.34.1",
 		"tsx": "^4.7.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.5.3",
+		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.10.7",
 		"env-cmd": "^10.1.0",
 		"nodemon": "^3.1.9",
