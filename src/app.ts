@@ -143,34 +143,6 @@ bot.on('callback_query:data', async (ctx) => {
 	if (!userId) {
 		return
 	}
-	if (callbackData === '1' || callbackData === '2') {
-		const isNotes = callbackData === '2'
-		const alarms = ctx.session.alarms.filter(
-			(alarm) => alarm.hasNote === isNotes,
-		)
-
-		for (const alarm of alarms) {
-			let text = ''
-			const hours = Math.floor(alarm.timeInMinutes / 60)
-			const minutes = alarm.timeInMinutes % 60
-			let newtime = `${hours.toString()}:${minutes.toString()}`
-			if (minutes === 0) {
-				newtime = `${newtime}0`
-			}
-			if (alarm.hasNote) {
-				text = `Note: ${alarm.content || 'No content'} (Time: ${newtime})`
-			} else {
-				text = `Alarm: ${newtime}`
-			}
-			await ctx.reply(text, {
-				reply_markup: new InlineKeyboard().text('Delete', `delete_${alarm.id}`),
-			})
-		}
-
-		const newButton = new InlineKeyboard().text('New ✍️⏰', '4').text('No', '5')
-		await ctx.reply('Create a new one?', { reply_markup: newButton })
-		await ctx.answerCallbackQuery()
-	}
 
 	if (callbackData.startsWith('delete_')) {
 		const alarmIdPart = callbackData.split('_')[1]
